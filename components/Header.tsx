@@ -1,4 +1,4 @@
-export function Header({ onNavigateToFoundIt }: { onNavigateToFoundIt?: () => void }) {
+export function Header() {
   return (
     <header 
       className="py-4 px-6 sticky top-0 z-50 shadow-lg backdrop-blur-md border-b"
@@ -36,6 +36,15 @@ export function Header({ onNavigateToFoundIt }: { onNavigateToFoundIt?: () => vo
             Nosotros
           </a>
           <a 
+            href="#servicios" 
+            className="transition-colors"
+            style={{ color: 'var(--sixth-mind-text)' }}
+            onMouseOver={(e) => e.target.style.color = 'var(--sixth-mind-secondary)'}
+            onMouseOut={(e) => e.target.style.color = 'var(--sixth-mind-text)'}
+          >
+            Servicios
+          </a>
+          <a 
             href="#equipo" 
             className="transition-colors"
             style={{ color: 'var(--sixth-mind-text)' }}
@@ -45,13 +54,13 @@ export function Header({ onNavigateToFoundIt }: { onNavigateToFoundIt?: () => vo
             Equipo
           </a>
           <a 
-            href="#contacto" 
-            className="transition-colors"
+            href="#foundit"
+            className="transition-colors bg-transparent border-0 cursor-pointer"
             style={{ color: 'var(--sixth-mind-text)' }}
             onMouseOver={(e) => e.target.style.color = 'var(--sixth-mind-secondary)'}
             onMouseOut={(e) => e.target.style.color = 'var(--sixth-mind-text)'}
           >
-            Contacto
+            Found-It
           </a>
         </nav>
       </div>

@@ -1,6 +1,4 @@
-import { Button } from "./ui/button";
-
-export function HeroSection({ onNavigateToFoundIt }: { onNavigateToFoundIt?: () => void }) {
+export function HeroSection() {
   return (
     <section 
       id="inicio" 
@@ -66,23 +64,23 @@ export function HeroSection({ onNavigateToFoundIt }: { onNavigateToFoundIt?: () 
             className="text-2xl md:text-3xl mb-8"
             style={{ color: 'var(--sixth-mind-text-light)' }}
           >
-            Desarrolladores de Software Innovadores
+            Transformación Digital para su Empresa
           </h2>
           <p 
             className="text-xl max-w-3xl mx-auto mb-12 leading-relaxed"
             style={{ color: 'var(--sixth-mind-text-light)' }}
           >
-            En Sixth Mind, somos un equipo de desarrolladores apasionados que creamos 
-            soluciones de software innovadoras. Transformamos ideas en aplicaciones 
-            funcionales y escalables que impulsan el crecimiento de nuestros clientes 
-            con tecnología de vanguardia.
+            Desarrollamos soluciones tecnológicas innovadoras que impulsan el crecimiento 
+            de su negocio. Desde sistemas de gestión automatizados hasta plataformas web 
+            personalizadas, transformamos sus procesos empresariales con herramientas 
+            modernas y eficientes.
           </p>
           
           <div className="flex justify-center">
-            <Button 
-              onClick={onNavigateToFoundIt}
-              className="px-8 py-4 text-lg text-white transition-all hover:scale-105 animate-glow shadow-lg hover:bg-red-500"
-              style={{ backgroundColor: 'var(--found-it-primary)' }}
+            <a 
+              href="#foundit"
+              className="px-8 py-4 text-lg text-white transition-all hover:scale-105 animate-glow shadow-lg hover:bg-red-500 rounded-lg inline-block"
+              style={{ backgroundColor: 'var(--found-it-primary)', textDecoration: 'none' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#FF0000';
               }}
@@ -90,8 +88,8 @@ export function HeroSection({ onNavigateToFoundIt }: { onNavigateToFoundIt?: () 
                 e.currentTarget.style.backgroundColor = 'var(--found-it-primary)';
               }}
             >
-              🔍 Ver Found-It
-            </Button>
+              Ver Nuestro Proyecto Found-It
+            </a>
           </div>
         </div>
       </div>

@@ -3,30 +3,53 @@ import { useState } from "react";
 
 export function AboutSection() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [currentSection, setCurrentSection] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const values = [
+  // Nueva sección: ¿Quiénes somos?
+  const aboutUs = {
+    title: "¿Quiénes somos?",
+    icon: "�",
+    color: "var(--sixth-mind-primary)",
+    content: "Somos una empresa de desarrollo de software enfocada en generar valor real para nuestros clientes. Nos especializamos en soluciones tecnológicas innovadoras que impulsan la productividad, construyendo relaciones basadas en confianza, resultados concretos y eficiencia.",
+    gradient: "from-blue-100/30 to-blue-200/40"
+  };
+
+  const sections = [
+    aboutUs,
     {
       title: "Misión",
       icon: "🎯",
       color: "var(--sixth-mind-secondary)",
-      content: "Desarrollar soluciones de software personalizadas que resuelvan problemas reales de nuestros clientes, utilizando las mejores prácticas de desarrollo y tecnologías modernas para crear productos escalables y de alta calidad.",
+      content: "Desarrollar software que transforme la productividad de nuestros clientes mediante soluciones tecnológicas innovadoras. Actuamos con integridad y compromiso, ofreciendo resultados medibles que fortalecen relaciones de confianza.",
       gradient: "from-teal-100/30 to-teal-200/40"
     },
     {
       title: "Visión",
       icon: "🔮",
       color: "var(--sixth-mind-primary)",
-      content: "Ser reconocidos como el equipo de desarrollo preferido por empresas que buscan transformación digital, destacando por nuestra capacidad de innovación, calidad técnica y compromiso con la excelencia.",
+      content: "Ser reconocidos por la excelencia y calidad de nuestras soluciones. Aspiramos a consolidarnos como una empresa líder, respaldada por la trazabilidad de nuestros proyectos, resultados comprobables y una cultura de mejora continua.",
       gradient: "from-blue-100/30 to-blue-200/40"
     },
     {
       title: "Valores",
       icon: "💎",
       color: "var(--sixth-mind-accent)",
-      content: "Calidad en cada línea de código • Innovación constante • Colaboración efectiva • Compromiso total • Transparencia absoluta • Crecimiento continuo",
+      content: "• Cabalidad - Actuar con rectitud y responsabilidad.\n• Calidad - Entregar soluciones que superen expectativas.\n• Compromiso - Cumplir con lo prometido, siempre.\n• Constancia - Mantener el esfuerzo y la mejora día a día.\n• Excelencia - Buscar lo mejor en cada proyecto.\n• Transparencia - Comunicar con claridad y honestidad.",
       gradient: "from-cyan-100/30 to-cyan-200/40"
     }
   ];
+
+  // Función para cambiar sección con animación
+  const changeSection = (newSection: number) => {
+    if (newSection >= 0 && newSection < sections.length && newSection !== currentSection) {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentSection(newSection);
+        setIsTransitioning(false);
+      }, 150);
+    }
+  };
 
   return (
     <section 
@@ -59,118 +82,218 @@ export function AboutSection() {
             className="text-5xl mb-6 animate-fade-in-up"
             style={{ color: 'var(--sixth-mind-text)' }}
           >
-            Nuestra Esencia
+            Sixth Mind
           </h2>
           <div 
             className="w-32 h-1 mx-auto mb-8 animate-glow"
             style={{ backgroundColor: 'var(--sixth-mind-secondary)' }}
           ></div>
           <p 
-            className="text-xl max-w-2xl mx-auto animate-fade-in-up"
+            className="text-xl max-w-2xl mx-auto animate-fade-in-up mb-8"
             style={{ color: 'var(--sixth-mind-text-light)' }}
           >
-            Descubre los pilares fundamentales que guían cada proyecto y decisión en Sixth Mind
+            Conozca los principios que guían nuestro trabajo y compromiso con la excelencia empresarial
           </p>
+
+          {/* Progress bar */}
+          <div className="flex items-center justify-center space-x-4 mb-8">
+            <div className="w-64 bg-gray-200 rounded-full h-2">
+              <div 
+                className="h-2 rounded-full transition-all duration-500"
+                style={{
+                  background: `linear-gradient(90deg, 
+                    var(--sixth-mind-secondary) 0%, 
+                    var(--sixth-mind-primary) 50%, 
+                    var(--sixth-mind-accent) 100%)`,
+                  width: `${((currentSection + 1) / sections.length) * 100}%`
+                }}
+              ></div>
+            </div>
+            <p 
+              className="text-xs font-semibold whitespace-nowrap"
+              style={{ color: 'var(--sixth-mind-text)', opacity: 0.6 }}
+            >
+              {currentSection + 1}/{sections.length}
+            </p>
+          </div>
         </div>
         
-        <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {values.map((item, index) => (
-            <div
-              key={index}
-              className="group perspective-1000"
-              onMouseEnter={() => setHoveredCard(index)}
-              onMouseLeave={() => setHoveredCard(null)}
+        {/* Contenedor con flechas integradas - Estilo Found-It */}
+        <div className="relative max-w-7xl mx-auto">
+          <div className="relative min-h-[500px] bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border-2 border-gray-100">
+            {/* Flecha izquierda */}
+            <button
+              onClick={() => changeSection(currentSection - 1)}
+              disabled={currentSection === 0}
+              className={`
+                absolute left-4 top-1/2 -translate-y-1/2 z-20
+                w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl
+                transition-all duration-300
+                ${currentSection === 0 
+                  ? 'opacity-30 cursor-not-allowed' 
+                  : 'hover:opacity-100 opacity-80'
+                }
+              `}
+              style={{
+                backgroundColor: currentSection === 0 ? '#E5E5E5' : 'var(--sixth-mind-primary)',
+                color: currentSection === 0 ? '#999' : 'white',
+                boxShadow: currentSection === 0 ? 'none' : '0 4px 15px rgba(0,0,0,0.1)'
+              }}
             >
-              <Card 
+              ⬅️
+            </button>
+
+            {/* Flecha derecha */}
+            <button
+              onClick={() => changeSection(currentSection + 1)}
+              disabled={currentSection === sections.length - 1}
+              className={`
+                absolute right-4 top-1/2 -translate-y-1/2 z-20
+                w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl
+                transition-all duration-300
+                ${currentSection === sections.length - 1 
+                  ? 'opacity-30 cursor-not-allowed' 
+                  : 'hover:opacity-100 opacity-80'
+                }
+              `}
+              style={{
+                backgroundColor: currentSection === sections.length - 1 ? '#E5E5E5' : 'var(--sixth-mind-primary)',
+                color: currentSection === sections.length - 1 ? '#999' : 'white',
+                boxShadow: currentSection === sections.length - 1 ? 'none' : '0 4px 15px rgba(0,0,0,0.1)'
+              }}
+            >
+              ➡️
+            </button>
+
+            {/* Contenido principal */}
+            <div className="px-20 py-12">
+              <div 
                 className={`
-                  relative h-80 cursor-pointer transition-all duration-700 transform-gpu
-                  border-0 shadow-lg backdrop-blur-sm overflow-hidden warm-card-bg
-                  ${hoveredCard === index ? 'scale-105 rotate-y-12' : 'hover:scale-102'}
-                  bg-gradient-to-br ${item.gradient}
+                  transition-all duration-300 transform
+                  ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}
                 `}
-                style={{ 
-                  backgroundColor: hoveredCard === index ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.7)',
-                  borderLeft: `4px solid ${item.color}`,
-                  boxShadow: hoveredCard === index 
-                    ? `0 20px 40px rgba(72, 163, 166, 0.3)` 
-                    : '0 10px 25px rgba(72, 163, 166, 0.1)'
-                }}
               >
-                {/* Warm glow effect */}
-                <div 
-                  className={`
-                    absolute inset-0 rounded-lg transition-opacity duration-500
-                    ${hoveredCard === index ? 'opacity-20' : 'opacity-0'}
-                  `}
-                  style={{ 
-                    boxShadow: `0 0 40px ${item.color}`,
-                    background: `radial-gradient(circle at center, ${item.color}20, transparent 70%)`
-                  }}
-                />
-                
-                <CardContent className="p-8 h-full flex flex-col justify-center text-center relative z-10">
-                  {/* Floating icon */}
-                  <div 
+                <div
+                  className="group perspective-1000"
+                  onMouseEnter={() => setHoveredCard(0)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  <Card 
                     className={`
-                      text-6xl mb-6 transition-all duration-500 transform
-                      ${hoveredCard === index ? 'scale-125 animate-float' : ''}
+                      relative min-h-96 cursor-pointer transition-all duration-300 transform-gpu
+                      border-0 shadow-lg backdrop-blur-sm overflow-hidden
+                      ${hoveredCard === 0 ? 'shadow-xl' : 'hover:shadow-lg'}
+                      bg-gradient-to-br ${sections[currentSection].gradient}
                     `}
-                  >
-                    {item.icon}
-                  </div>
-                  
-                  {/* Title with gradient text */}
-                  <h3 
-                    className="text-2xl mb-6 transition-all duration-500"
                     style={{ 
-                      color: hoveredCard === index ? item.color : 'var(--sixth-mind-text)',
-                      textShadow: hoveredCard === index ? `0 0 20px ${item.color}30` : 'none'
+                      backgroundColor: hoveredCard === 0 ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)',
+                      borderLeft: `6px solid ${sections[currentSection].color}`,
+                      boxShadow: hoveredCard === 0 
+                        ? `0 8px 20px ${sections[currentSection].color}15` 
+                        : '0 4px 15px rgba(0,0,0,0.1)'
                     }}
                   >
-                    {item.title}
-                  </h3>
-                  
-                  {/* Content with reveal animation */}
-                  <div 
-                    className={`
-                      transition-all duration-500 transform
-                      ${hoveredCard === index ? 'opacity-100 translate-y-0' : 'opacity-80 translate-y-2'}
-                    `}
-                  >
-                    <p 
-                      className="leading-relaxed"
-                      style={{ color: 'var(--sixth-mind-text-light)' }}
-                    >
-                      {item.content}
-                    </p>
-                  </div>
-                  
-                  {/* Interactive warm particles */}
-                  {hoveredCard === index && (
-                    <div className="absolute inset-0 pointer-events-none">
-                      {[...Array(8)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="absolute w-3 h-3 rounded-full animate-ping"
-                          style={{
-                            backgroundColor: i % 2 === 0 ? 'var(--sixth-mind-secondary)' : 'var(--sixth-mind-accent)',
-                            left: `${15 + i * 10}%`,
-                            top: `${25 + (i % 3) * 15}%`,
-                            animationDelay: `${i * 0.15}s`,
-                            opacity: 0.6
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                    {/* Background animado cuando hover */}
+                    <div 
+                      className={`
+                        absolute inset-0 rounded-lg transition-opacity duration-300
+                        ${hoveredCard === 0 ? 'opacity-5' : 'opacity-0'}
+                      `}
+                      style={{ backgroundColor: sections[currentSection].color }}
+                    />
+                    
+                    <CardContent className="p-12 h-full flex flex-col justify-center text-center relative z-10">
+                      {/* Floating icon */}
+                      <div 
+                        className={`
+                          text-8xl mb-8 transition-all duration-300 transform
+                          ${hoveredCard === 0 ? 'scale-105' : ''}
+                        `}
+                      >
+                        {sections[currentSection].icon}
+                      </div>
+                      
+                      {/* Title with gradient text */}
+                      <h3 
+                        className="text-4xl mb-8 transition-all duration-300 font-bold"
+                        style={{ 
+                          color: hoveredCard === 0 ? sections[currentSection].color : 'var(--sixth-mind-text)'
+                        }}
+                      >
+                        {sections[currentSection].title}
+                      </h3>
+                      
+                      {/* Content */}
+                      <div 
+                        className={`
+                          transition-all duration-300 transform
+                          ${hoveredCard === 0 ? 'opacity-100 translate-y-0' : 'opacity-90 translate-y-2'}
+                        `}
+                      >
+                        <div 
+                          className="text-lg leading-relaxed max-w-3xl mx-auto"
+                          style={{ color: 'var(--sixth-mind-text-light)' }}
+                        >
+                          {sections[currentSection].content.split('\n').map((line, index) => (
+                            <p key={index} className={index > 0 ? 'mt-2' : ''}>
+                              {line}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
-          ))}
+
+            {/* Indicadores de página en la parte inferior */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+              <div className="flex space-x-2">
+                {sections.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => changeSection(index)}
+                    className={`
+                      w-3 h-3 rounded-full transition-all duration-300
+                      ${currentSection === index 
+                        ? 'opacity-100' 
+                        : 'opacity-40 hover:opacity-70'
+                      }
+                    `}
+                    style={{
+                      backgroundColor: currentSection === index 
+                        ? 'var(--sixth-mind-primary)' 
+                        : 'var(--sixth-mind-secondary)'
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Información de página */}
+          <div className="text-center mt-6">
+            <p 
+              className="text-sm font-medium"
+              style={{ color: 'var(--sixth-mind-text)', opacity: 0.6 }}
+            >
+              Sección {currentSection + 1} de {sections.length}
+            </p>
+          </div>
         </div>
 
         {/* Magic bottom section with warm colors */}
         <div className="text-center mt-20">
+          {/* Logo de Sixth Mind */}
+          <div className="mb-8">
+            <img 
+              src="/images/Logotipos/sixthMind.png" 
+              alt="Sixth Mind Logo" 
+              className="mx-auto h-16 w-auto transition-all duration-300 hover:scale-110 drop-shadow-lg"
+            />
+          </div>
+          
           <div 
             className="inline-block p-8 rounded-2xl backdrop-blur-sm border animate-fade-in-up shadow-lg"
             style={{ 
@@ -186,14 +309,14 @@ export function AboutSection() {
               className="text-2xl mb-4"
               style={{ color: 'var(--sixth-mind-text)' }}
             >
-              ✨ La Magia del Desarrollo
+              Nuestro Compromiso con la Excelencia
             </h3>
             <p 
               className="text-lg max-w-2xl"
               style={{ color: 'var(--sixth-mind-text-light)' }}
             >
-              Cada proyecto es una nueva aventura donde la creatividad se encuentra con la tecnología, 
-              creando soluciones que superan las expectativas.
+              Cada proyecto representa una oportunidad de superar expectativas y crear 
+              soluciones que impulsen el éxito de nuestros clientes hacia el futuro digital.
             </p>
           </div>
         </div>
